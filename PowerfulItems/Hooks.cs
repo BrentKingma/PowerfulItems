@@ -8,6 +8,7 @@ namespace PowerfulItems
     {
         internal static float defaultTrackingDistance;
         internal static bool hasHuntressInGame;
+        internal static CharacterBody myBody;
         internal static void Init()
         {
             On.RoR2.HuntressTracker.Awake += (orig, self) =>
@@ -24,7 +25,18 @@ namespace PowerfulItems
                     self.GetComponent<HuntressTracker>().maxTrackingDistance = defaultTrackingDistance + (15 * self.inventory.GetItemCount(Assets.GerladMagItemDef.itemIndex));
                 }
             };
-            //Checks if a huntress is present, if not removes custom item from loot pool
+            On.RoR2.Run.Start += (orig, self) =>
+            {
+                foreach(var controller in PlayerCharacterMasterController.instances)
+                {
+                    if(controller.isLocalPlayer)
+                    {
+                        myBody = controller.master.bodyPrefab.GetComponent<CharacterBody>();
+                        break;
+                    }
+                }
+                orig(self);
+            };
             On.RoR2.Run.BuildDropTable += (orig, self) =>
             {
                 foreach (var controller in PlayerCharacterMasterController.instances)
@@ -42,16 +54,22 @@ namespace PowerfulItems
                 }
                 orig(self);
             };
-            On.RoR2.PickupPickerController.IsChoiceAvailable += (orig, self, choice) =>
+            On.RoR2.GenericPickupController.GetInteractability += (orig, self, activator) =>
             {
-               // if()
-                //{
-
-               //     return false;
-                //}
-                return orig(self, choice);
+                if(PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.GerladMagItemDef.itemIndex && activator.GetComponent<HuntressTracker>() == null)
+                {
+                    return Interactability.ConditionsNotMet;
+                }
+                return orig(self, activator);
             };
-            Chat.AddMessage("Hooks Added");
+            On.RoR2.GenericPickupController.OnTriggerStay += (orig, self, other) =>
+            {
+                if (PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.GerladMagItemDef.itemIndex && other.GetComponent<HuntressTracker>() == null)
+                {
+                    return;
+                }
+                orig(self, other);
+            };
         }    
     }
 }
