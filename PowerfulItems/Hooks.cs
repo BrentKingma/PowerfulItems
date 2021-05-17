@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using R2API.Utils;
 using RoR2;
 
 
@@ -11,6 +12,11 @@ namespace PowerfulItems
         internal static CharacterBody myBody;
         internal static void Init()
         {
+            On.RoR2.Console.Awake += (orig, self) =>
+            {
+                CommandHelper.AddToConsoleWhenReady();
+                orig(self);
+            };
             On.RoR2.HuntressTracker.Awake += (orig, self) =>
             {
                 Chat.AddMessage("Hunter Awoken");
@@ -50,7 +56,7 @@ namespace PowerfulItems
                 if (!hasHuntressInGame)
                 {
                     self.availableItems.Remove(Assets.GerladMagItemDef.itemIndex);
-                    Chat.AddMessage("Removed from available items");
+                    //Chat.AddMessage("Removed from available items");
                 }
                 orig(self);
             };
@@ -69,6 +75,12 @@ namespace PowerfulItems
                     return;
                 }
                 orig(self, other);
+            };
+
+            On.RoR2.SceneDirector.PopulateScene += (orig, self) =>
+            {
+                self.interactableCredit = (int)(self.interactableCredit * Commands.interactableCreditMulti);
+                orig(self);
             };
         }    
     }

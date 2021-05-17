@@ -9,7 +9,7 @@ namespace PowerfulItems
     //[BepInDependency("com.bepis.r2api")]
     [BepInDependency(R2API.R2API.PluginGUID)]
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI))]
-    //Change these
+    [R2APISubmoduleDependency(nameof(CommandHelper))]
     [BepInPlugin("com.github.brentkingma.powerfulitems", "Powerful Items", "1.0.0")]
     public class PowerfulItems : BaseUnityPlugin
     {
