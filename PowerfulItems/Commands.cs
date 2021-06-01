@@ -16,7 +16,7 @@ namespace PowerfulItems
             }
             else
             {
-                Variables.InteractableMultiplier = multiplier;
+                Variables.interactableMultiplier.Value = multiplier;
             }
         }
         [ConCommand(commandName = "get_interactables_spawn_multiplier", flags = ConVarFlags.None, helpText = "Returns the multiplier of chest spawns")]
@@ -24,7 +24,7 @@ namespace PowerfulItems
         {
             Debug.Log(args.Count != 0
                 ? "Invalid arguments. Did you mean set_chest_spawn_multiplier?"
-                : $"Your multiplier is currently {Variables.InteractableMultiplier}.");
+                : $"Your multiplier is currently {Variables.interactableMultiplier.Value}.");
         }
         
         [ConCommand(commandName = "set_gold_multiplier", flags = ConVarFlags.None, helpText = "Applies a multiplier to the gold income.")]
@@ -38,7 +38,7 @@ namespace PowerfulItems
             }
             else
             {
-                Variables.MoneyMultiplier = multiplier;
+                Variables.moneyMultiplier.Value = multiplier;
             }
         }
         [ConCommand(commandName = "get_gold_multiplier", flags = ConVarFlags.None, helpText = "Returns the multiplier of gold")]
@@ -46,7 +46,7 @@ namespace PowerfulItems
         {
             Debug.Log(args.Count != 0
                 ? "Invalid arguments. Did you mean set_chest_spawn_multiplier?"
-                : $"Your multiplier is currently {Variables.InteractableMultiplier}.");
+                : $"Your multiplier is currently {Variables.moneyMultiplier.Value}.");
         }
     }
 }

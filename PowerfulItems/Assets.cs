@@ -7,9 +7,9 @@ namespace PowerfulItems
 {
     internal static class Assets
     {
-        internal static GameObject GerladMagPrefab;
-        internal static Sprite GerladMagIcon;
-        internal static ItemDef GerladMagItemDef;
+        internal static GameObject MagnifingGlassPrefab;
+        internal static Sprite MagnifingGlassIcon;
+        internal static ItemDef MagnifingGlassItemDef;
 
         internal static GameObject ExtendedMagPrefab;
         internal static Sprite ExtendedMagIcon;
@@ -24,26 +24,26 @@ namespace PowerfulItems
             {
                 var bundle = AssetBundle.LoadFromStream(stream);
 
-                GerladMagPrefab = bundle.LoadAsset<GameObject>("Assets/magglass/model/magglass.prefab");
-                GerladMagIcon = bundle.LoadAsset<Sprite>("Assets/magglass/portrait/magglassport.png");
+                MagnifingGlassPrefab = bundle.LoadAsset<GameObject>("Assets/magglass/model/magglass.prefab");
+                MagnifingGlassIcon = bundle.LoadAsset<Sprite>("Assets/magglass/portrait/magglassport.png");
                 ExtendedMagPrefab = bundle.LoadAsset<GameObject>("Assets/extmag/model/magbullet.prefab");
                 ExtendedMagIcon = bundle.LoadAsset<Sprite>("Assets/extmag/portrait/mag.png");
             }
 
-            GerladMagAsRedTierItem();
+            LoadMagnifingGlass();
             LoadExtMag();
 
             AddLanguageTokens();
         }
 
-        private static void GerladMagAsRedTierItem()
+        private static void LoadMagnifingGlass()
         {
-            GerladMagItemDef = new ItemDef
+            MagnifingGlassItemDef = new ItemDef
             {
                 name = "MagnifyingGlass",
                 tier = ItemTier.Tier3,
-                pickupModelPrefab = GerladMagPrefab,
-                pickupIconSprite = GerladMagIcon,
+                pickupModelPrefab = MagnifingGlassPrefab,
+                pickupIconSprite = MagnifingGlassIcon,
                 nameToken = "MAGGLASS_NAME",
                 pickupToken = "MAGGLASS_PICKUP",
                 descriptionToken = "MAGGLASS_DESC",
@@ -56,13 +56,13 @@ namespace PowerfulItems
             };
 
             var itemDisplayRules = new ItemDisplayRule[1]; 
-            itemDisplayRules[0].followerPrefab = GerladMagPrefab;
+            itemDisplayRules[0].followerPrefab = MagnifingGlassPrefab;
             itemDisplayRules[0].childName = "Chest"; 
             itemDisplayRules[0].localScale = new Vector3(0.15f, 0.15f, 0.15f); 
             itemDisplayRules[0].localAngles = new Vector3(0f, 180f, 0f); 
             itemDisplayRules[0].localPos = new Vector3(-0.35f, -0.1f, 0f); 
 
-            var biscoLeash = new R2API.CustomItem(GerladMagItemDef, itemDisplayRules);
+            var biscoLeash = new R2API.CustomItem(MagnifingGlassItemDef, itemDisplayRules);
 
             ItemAPI.Add(biscoLeash); 
         }

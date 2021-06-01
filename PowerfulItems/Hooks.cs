@@ -23,21 +23,22 @@ namespace PowerfulItems
                 orig(self);
                 if (self.isPlayerControlled && Variables.MyCharacterIndex == 6)
                 {
-                    self.GetComponent<HuntressTracker>().maxTrackingDistance = Variables.DefaultHuntressTrackingDistance + (15 * self.inventory.GetItemCount(Assets.GerladMagItemDef.itemIndex));
+                    self.GetComponent<HuntressTracker>().maxTrackingDistance = Variables.DefaultHuntressTrackingDistance + (15 * self.inventory.GetItemCount(Assets.MagnifingGlassItemDef.itemIndex));
                 }
-                if(self.isPlayerControlled && Variables.MyCharacterIndex == 0)
+                if (self.isPlayerControlled && Variables.MyCharacterIndex == 0)
                 {
-                    self.GetComponent<SkillLocator>().primary.SetBonusStockFromBody((self.inventory.GetItemCount(Assets.ExtendedMagItemDef.itemIndex)));
-                    self.GetComponent<SkillLocator>().primary.stock = self.GetComponent<SkillLocator>().primary.maxStock;
+                    SkillLocator locator = self.GetComponent<SkillLocator>();
+                    locator.primary.SetBonusStockFromBody((self.inventory.GetItemCount(Assets.ExtendedMagItemDef.itemIndex)));
+                    locator.primary.stock = locator.primary.maxStock;
                 }
             };
             On.RoR2.Run.Start += (orig, self) =>
             {
-                foreach (var controller in PlayerCharacterMasterController.instances)
+                foreach (var playerCharacterMasterControllerInstance in PlayerCharacterMasterController.instances)
                 {
-                    if (controller.isLocalPlayer)
+                    if (playerCharacterMasterControllerInstance.isLocalPlayer)
                     {
-                        Variables.MyBody = controller.master.bodyPrefab.GetComponent<CharacterBody>();
+                        Variables.MyBody = playerCharacterMasterControllerInstance.master.bodyPrefab.GetComponent<CharacterBody>();
                         break;
                     }
                 }
@@ -45,19 +46,11 @@ namespace PowerfulItems
             };
             On.RoR2.Run.BuildDropTable += (orig, self) =>
             {
-                //foreach (var controller in PlayerCharacterMasterController.instances)
-                //{
-                //    if (controller.master.bodyPrefab.GetComponent<HuntressTracker>() != null)
-                //    {
-                //        Variables.HasHuntress = true;
-                //        break;
-                //    }
-                //}
                 if (!Variables.HasHuntress)
                 {
-                    self.availableItems.Remove(Assets.GerladMagItemDef.itemIndex);
+                    self.availableItems.Remove(Assets.MagnifingGlassItemDef.itemIndex);
                 }
-                if(!Variables.HasBandit)
+                if (!Variables.HasBandit)
                 {
                     self.availableItems.Remove(Assets.ExtendedMagItemDef.itemIndex);
                 }
@@ -65,7 +58,7 @@ namespace PowerfulItems
             };
             On.RoR2.GenericPickupController.GetInteractability += (orig, self, activator) =>
             {
-                if (PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.GerladMagItemDef.itemIndex && Variables.MyCharacterIndex != 6)
+                if (PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.MagnifingGlassItemDef.itemIndex && Variables.MyCharacterIndex != 6)
                 {
                     return Interactability.ConditionsNotMet;
                 }
@@ -77,7 +70,7 @@ namespace PowerfulItems
             };
             On.RoR2.GenericPickupController.OnTriggerStay += (orig, self, other) =>
             {
-                if (PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.GerladMagItemDef.itemIndex && Variables.MyCharacterIndex != 6)
+                if (PickupCatalog.GetPickupDef(self.pickupIndex).itemIndex == Assets.MagnifingGlassItemDef.itemIndex && Variables.MyCharacterIndex != 6)
                 {
                     return;
                 }
@@ -89,12 +82,12 @@ namespace PowerfulItems
             };
             On.RoR2.SceneDirector.PopulateScene += (orig, self) =>
             {
-                self.interactableCredit = (int)(self.interactableCredit * Variables.InteractableMultiplier);
+                self.interactableCredit = (int)(self.interactableCredit * Variables.interactableMultiplier.Value);
                 orig(self);
             };
             On.RoR2.CharacterMaster.GiveMoney += (orig, self, amount) =>
             {
-                amount = (uint)(amount * Variables.MoneyMultiplier);
+                amount = (uint)(amount * Variables.moneyMultiplier.Value);
                 orig(self, amount);
             };
             On.RoR2.PreGameController.StartRun += (orig, self) =>
@@ -105,7 +98,7 @@ namespace PowerfulItems
                     var body = BodyCatalog.GetBodyPrefab(NetworkUser.readOnlyInstancesList[i].bodyIndexPreference);
                     int index = (int)SurvivorCatalog.FindSurvivorDefFromBody(body).survivorIndex;
                     //Stores your survivor index
-                    if(i == 0)
+                    if (i == 0)
                     {
                         Variables.MyCharacterIndex = index;
                     }
@@ -113,7 +106,7 @@ namespace PowerfulItems
                     {
                         Variables.HasBandit = true;
                     }
-                    if(index == 6)
+                    if (index == 6)
                     {
                         Variables.HasHuntress = true;
                     }
@@ -121,6 +114,6 @@ namespace PowerfulItems
 
                 orig(self);
             };
-        }    
+        }
     }
 }

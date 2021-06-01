@@ -1,22 +1,13 @@
-﻿using RoR2;
+﻿using BepInEx.Configuration;
+using RoR2;
 
 namespace PowerfulItems
 {
     class Variables
     {
-        private static float interactableMultiplier { get; set; } = 1.0f;
-        public static float InteractableMultiplier
-        {
-            get => interactableMultiplier;
-            set => interactableMultiplier = value;
-        }
+        public static ConfigEntry<float> interactableMultiplier { get; set; }
+        public static ConfigEntry<float> moneyMultiplier { get; set; }
 
-        private static float moneyMultiplier { get; set; } = 1.0f;
-        public static float MoneyMultiplier 
-        {
-            get => moneyMultiplier;
-            set => moneyMultiplier = value;
-        }
 
         private static CharacterBody characterBody {get; set;}
         public static CharacterBody MyBody

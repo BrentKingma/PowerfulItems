@@ -3,6 +3,7 @@ using RoR2;
 using R2API;
 using R2API.Utils;
 using UnityEngine;
+using BepInEx.Configuration;
 
 namespace PowerfulItems
 {
@@ -12,13 +13,33 @@ namespace PowerfulItems
     [BepInPlugin("com.github.brentkingma.powerfulitems", "Powerful Items", "0.2.0")]
     public class PowerfulItems : BaseUnityPlugin
     {
-
+        private static ConfigFile ItemValueAdjustments { get; set; }
         public void Awake()
         {
+            GenerateConfig();
             Assets.Init();
             Hooks.Init();
         }
 
+        void GenerateConfig()
+        {
+            ItemValueAdjustments = new ConfigFile(Paths.ConfigPath + "\\ItemsValues.cfg", true);
+
+            Variables.interactableMultiplier = Config.Bind<float>(
+                "Multipliers",
+                "InteratableMulti",
+                1.0f,
+                "The multiplier for the number of interactables on the map."
+                );
+            Variables.moneyMultiplier = Config.Bind<float>(
+                "Multipliers",
+                "MoneyMulti",
+                1.0f,
+                "The multiplier for money obtained."
+                );
+        }
+
+        //DEBUGBING PURPOSES
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.F2))
@@ -26,7 +47,7 @@ namespace PowerfulItems
                 //Get the player body to use a position:	
                 var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
                 //And then drop our defined item in front of the player.
-                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.GerladMagItemDef.itemIndex), transform.position, transform.forward * 20f);
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.MagnifingGlassItemDef.itemIndex), transform.position, transform.forward * 20f);
             }
             if (Input.GetKeyDown(KeyCode.F3))
             {
