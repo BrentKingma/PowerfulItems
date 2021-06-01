@@ -40,23 +40,23 @@ namespace PowerfulItems
         }
 
         //DEBUGBING PURPOSES
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.F2))
-            {
-                //Get the player body to use a position:	
-                var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-                //And then drop our defined item in front of the player.
-                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.MagnifingGlassItemDef.itemIndex), transform.position, transform.forward * 20f);
-            }
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                //Get the player body to use a position:	
-                var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
-                //And then drop our defined item in front of the player.
-                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.ExtendedMagItemDef.itemIndex), transform.position, transform.forward * 20f);
-            }
-        }
+        //public void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.F2))
+        //    {
+        //        //Get the player body to use a position:	
+        //        var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
+        //        //And then drop our defined item in front of the player.
+        //        PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.MagnifingGlassItemDef.itemIndex), transform.position, transform.forward * 20f);
+        //    }
+        //    if (Input.GetKeyDown(KeyCode.F3))
+        //    {
+        //        //Get the player body to use a position:	
+        //        var transform = PlayerCharacterMasterController.instances[0].master.GetBodyObject().transform;
+        //        //And then drop our defined item in front of the player.
+        //        PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(Assets.ExtendedMagItemDef.itemIndex), transform.position, transform.forward * 20f);
+        //    }
+        //}
     }
 }
 
